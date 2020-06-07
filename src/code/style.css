@@ -3,6 +3,8 @@ body{
     overflow: hidden
 }
 
-ThreeCanvas{
-    size: 100%;
+#ThreeCanvas{
+    width: 100%;
+    height: 100%;
+    display: block;
 }

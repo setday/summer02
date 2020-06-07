@@ -4,6 +4,8 @@ export default class MouseWork {
   constructor (canvas) {
     this.transX = 0.0; this.transY = 0.0; this.transZ = 0.0;
     this.mouseX = 0.0; this.mouseY = 0.0;
+    this.mouseXChange = 0.0; this.mouseYChange = 0.0;
+
     let func = this.onWheel.bind(this);
 
     canvas.addEventListener('wheel', func);
@@ -38,9 +40,12 @@ export default class MouseWork {
   }
 
   onMouseMove (event) {
-    this.transX += (this.startPosX - event.pageX) * (10 ** this.transZ);
+    this.mouseXChange = (this.startPosX - event.pageX) * (10 ** this.transZ);
+    this.transX += this.mouseXChange;
     this.startPosX = event.pageX;
-    this.transY += (this.startPosY - event.pageY) * (10 ** this.transZ);
+
+    this.mouseYChange = (this.startPosY - event.pageY) * (10 ** this.transZ);
+    this.transY += this.mouseYChange;
     this.startPosY = event.pageY;
   }
 
@@ -55,6 +60,18 @@ export default class MouseWork {
 
   get getTransY () {
     return this.transY;
+  }
+
+  get getXChange () {
+    const change = this.mouseXChange;
+    this.mouseXChange = 0;
+    return change;
+  }
+
+  get getYChange () {
+    const change = this.mouseYChange;
+    this.mouseYChange = 0;
+    return change;
   }
 
   get getTransZ () {
