@@ -1,6 +1,7 @@
 import './style.css';
 import * as THREE from 'three';
 import MouseWork from './mouse.mjs';
+import TopologyWork from './topology.js';
 
 function webGLStart () {
   const canvas = document.querySelector('#ThreeCanvas');
@@ -11,12 +12,16 @@ function webGLStart () {
   const fov = 75;
   const aspect = 1;
   const near = 0.1;
-  const far = 5;
+  const far = 100;
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.z = 4;
-  camera.position.y = 2;
+  camera.position.y = 20;
 
   const scene = new THREE.Scene();
+
+  const tw = new TopologyWork('topo.png', scene);
+
+  tw.draw(scene);
 
   {
     const color = 0xFFFFFF;
@@ -29,11 +34,11 @@ function webGLStart () {
   const boxWidth = 1;
   const boxHeight = 1;
   const boxDepth = 1;
-  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+  const geometry1 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-  const material = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
+  const material1 = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
 
-  const cube = new THREE.Mesh(geometry, material);
+  const cube = new THREE.Mesh(geometry1, material1);
   scene.add(cube);
 
   function resize () {
