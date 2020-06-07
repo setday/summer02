@@ -31,20 +31,17 @@ export default class MouseWork {
   onWheel (event) {
     this.mouseX = event.offsetX - 500; this.mouseY = 500 - event.offsetY;
 
-    this.transX += this.mouseX * ((10 ** this.transZ) - (10 ** (this.transZ + event.deltaY * 3 / 10000)));
-    this.transY -= this.mouseY * ((10 ** this.transZ) - (10 ** (this.transZ + event.deltaY * 3 / 10000)));
-
     this.transZ += event.deltaY * 3 / 10000;
 
     return false;
   }
 
   onMouseMove (event) {
-    this.mouseXChange = (this.startPosX - event.pageX) * (10 ** this.transZ);
+    this.mouseXChange = this.startPosX - event.pageX;
     this.transX += this.mouseXChange;
     this.startPosX = event.pageX;
 
-    this.mouseYChange = (this.startPosY - event.pageY) * (10 ** this.transZ);
+    this.mouseYChange = this.startPosY - event.pageY;
     this.transY += this.mouseYChange;
     this.startPosY = event.pageY;
   }
