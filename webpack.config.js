@@ -41,6 +41,14 @@ module.exports = {
         ]
       },
       {
+        test: /\.obj$/,
+        use: [
+          {
+            loader: 'three-obj-loader'
+          }
+        ]
+      },
+      {
         test: /\.(png|jpg|gif)$/,
         use: [
           {

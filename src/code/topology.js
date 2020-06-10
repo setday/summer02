@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export default class TopologyWork {
-  constructor (filename, scene) {
+  constructor (filename) {
     this.isLoad = false;
     this.onLoad = function () {};
 
@@ -49,7 +49,7 @@ export default class TopologyWork {
           );
         }
       }
-      geometry.computeFaceNormals();
+      geometry.computeVertexNormals();
 
       geometry.translate(w / -2, 0, h / -2);
 

@@ -2,7 +2,7 @@
 
 export default class MouseWork {
   constructor (canvas) {
-    this.transX = 0.0; this.transY = 0.0; this.transZ = 0.0;
+    this.transX = 0.0; this.transY = 0.0; this.transZ = 10.0;
     this.mouseX = 0.0; this.mouseY = 0.0;
     this.mouseXChange = 0.0; this.mouseYChange = 0.0;
 
@@ -29,11 +29,9 @@ export default class MouseWork {
   }
 
   onWheel (event) {
-    this.mouseX = event.offsetX - 500; this.mouseY = 500 - event.offsetY;
-
-    this.transZ += event.deltaY * 3 / 10000;
-
-    return false;
+    if (this.transZ > -event.deltaY * 3 / 10000) {
+      this.transZ += event.deltaY * 3 / 10000;
+    }
   }
 
   onMouseMove (event) {
