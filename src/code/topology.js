@@ -3,6 +3,7 @@ import * as THREE from 'three';
 export default class TopologyWork {
   constructor (filename) {
     this.isLoad = false;
+    this.koef = 32;
     this.onLoad = function () {};
 
     const func = function (image) {
@@ -12,6 +13,10 @@ export default class TopologyWork {
       context.canvas.height = h;
       context.drawImage(image, 0, 0);
       const { data } = context.getImageData(0, 0, w, h);
+
+      this.data = data;
+      this.h = h;
+      this.w = w;
 
       const geometry = new THREE.Geometry();
 
@@ -26,10 +31,10 @@ export default class TopologyWork {
           const h11 = data[nextRowPixelH + 4] / 16;
           const pointH = (h00 + h01 + h10 + h11) / 4;
 
-          const x0 = x;
-          const x1 = x + 1;
-          const z0 = z;
-          const z1 = z + 1;
+          const x0 = x * 2 / this.koef;
+          const x1 = (x + 1) * 2 / this.koef;
+          const z0 = z * 2 / this.koef;
+          const z1 = (z + 1) * 2 / this.koef;
 
           const ndx = geometry.vertices.length;
 
@@ -51,11 +56,13 @@ export default class TopologyWork {
       }
       geometry.computeVertexNormals();
 
-      geometry.translate(w / -2, 0, h / -2);
+      geometry.translate(w / -this.koef, 0, h / -this.koef);
 
       const material = new THREE.MeshPhongMaterial({ color: 'blue' });
 
       this.topology = new THREE.Mesh(geometry, material);
+
+      this.topology.receiveShadow = true;
 
       this.isLoad = true;
 
@@ -64,7 +71,7 @@ export default class TopologyWork {
 
     const createTopology = func.bind(this);
     this.imgLoader = new THREE.ImageLoader();
-    this.imgLoader.load('src/img/' + filename, createTopology);
+    this.imgLoader.load(filename, createTopology);
   }
 
   draw (scene) {
@@ -73,6 +80,16 @@ export default class TopologyWork {
     } else {
       this.onLoad = () => { this.scene.add(this.topology); };
       this.scene = scene;
+    }
+  }
+
+  height (x, y) {
+    if (this.isLoad === true) {
+      const a = this.data[(Math.round((y * this.koef + this.h) / 2) * this.w + Math.round((x * this.koef + this.w) / 2)) * 4] / 16;
+      if (isNaN(a) || x < -this.w / this.koef || y < -this.h / this.koef || x >= this.w / this.koef || y >= this.h / this.koef) {
+        return 0;
+      }
+      return a;
     }
   }
 }

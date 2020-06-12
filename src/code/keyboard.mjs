@@ -20,9 +20,6 @@ export default class KeyboardWork {
   }
 
   update () {
-    if (this.z % 60 === 0) {
-      console.log(this.arr);
-    }
     for (const i of this.arr) {
       this.inputfunc(i);
     }

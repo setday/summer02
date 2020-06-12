@@ -1,13 +1,13 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export default class ObjectWork {
-  constructor (filename, scene) {
+  constructor (filename) {
     const gltfLoader = new GLTFLoader();
     this.isLoad = false;
     this.onLoad = () => {};
     this.onUpdate = () => {};
 
-    gltfLoader.load('src/obj/truck.glb', (object) => {
+    gltfLoader.load(filename, (object) => {
       this.obj = object.scene;
 
       this.isLoad = true;

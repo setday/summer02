@@ -41,15 +41,15 @@ module.exports = {
         ]
       },
       {
-        test: /\.obj$/,
+        test: /\.(png|jpg|gif)$/,
         use: [
           {
-            loader: 'three-obj-loader'
+            loader: 'file-loader'
           }
         ]
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(glb|gltf)$/,
         use: [
           {
             loader: 'file-loader'
