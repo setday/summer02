@@ -1,4 +1,6 @@
+import ParticlesWork from './particles.js';
 import ObjectWork from './objects.mjs';
+import fileImg1 from './../img/dust.png';
 import * as THREE from 'three';
 
 export default class CarFromObj extends ObjectWork {
@@ -10,6 +12,34 @@ export default class CarFromObj extends ObjectWork {
     this.position = { x: 0, y: 13, z: 0 };
     this.wheelRot = 0;
     this.wheelRotY = 0;
+
+    this.particleUpdate = (particle) => { return true; };
+
+    const func1 = (particle) => { return this.particleUpdate(particle); };
+
+    this.particleSpawnlf = (particle) => { return false; };
+
+    let func = (particle) => { return this.particleSpawnlf(particle); };
+
+    this.pwlf = new ParticlesWork(0.003, fileImg1, func.bind(this), func1.bind(this));
+
+    this.particleSpawnrf = (particle) => { return false; };
+
+    func = (particle) => { return this.particleSpawnrf(particle); };
+
+    this.pwrf = new ParticlesWork(0.003, fileImg1, func.bind(this), func1.bind(this));
+
+    this.particleSpawnll = (particle) => { return false; };
+
+    func = (particle) => { return this.particleSpawnll(particle); };
+
+    this.pwll = new ParticlesWork(0.003, fileImg1, func.bind(this), func1.bind(this));
+
+    this.particleSpawnrl = (particle) => { return false; };
+
+    func = (particle) => { return this.particleSpawnrl(particle); };
+
+    this.pwrl = new ParticlesWork(0.003, fileImg1, func.bind(this), func1.bind(this));
   }
 
   draw (scene) {
@@ -102,14 +132,122 @@ export default class CarFromObj extends ObjectWork {
 
         this.body.rotation.y = this.angle;
       };
+
+      this.particleSpawnlf = (particle) => {
+        if (this.speed <= 0.02) {
+          return false;
+        }
+
+        const { x, z } = this.lfWheel.getWorldPosition(new THREE.Vector3());
+        let { y } = this.body.getWorldPosition(new THREE.Vector3());
+        y -= this.bodyH;
+
+        particle.position.set(x, y, z);
+
+        particle.velocity = {
+          x: -this.speed / 8 * Math.cos(-this.angle),
+          z: -this.speed / 8 * Math.sin(-this.angle),
+          y: 0.003
+        };
+
+        this.scene.add(particle);
+
+        return true;
+      };
+
+      this.particleSpawnrf = (particle) => {
+        if (this.speed <= 0.02) {
+          return false;
+        }
+
+        const { x, z } = this.rfWheel.getWorldPosition(new THREE.Vector3());
+        let { y } = this.body.getWorldPosition(new THREE.Vector3());
+        y -= this.bodyH;
+
+        particle.position.set(x, y, z);
+
+        particle.velocity = {
+          x: -this.speed / 8 * Math.cos(-this.angle),
+          z: -this.speed / 8 * Math.sin(-this.angle),
+          y: 0.003
+        };
+
+        this.scene.add(particle);
+
+        return true;
+      };
+
+      this.particleSpawnll = (particle) => {
+        if (this.speed <= 0.02) {
+          return false;
+        }
+
+        const { x, z } = this.llWheel.getWorldPosition(new THREE.Vector3());
+        let { y } = this.body.getWorldPosition(new THREE.Vector3());
+        y -= this.bodyH;
+
+        particle.position.set(x, y, z);
+
+        particle.velocity = {
+          x: -this.speed / 8 * Math.cos(-this.angle),
+          z: -this.speed / 8 * Math.sin(-this.angle),
+          y: 0.003
+        };
+
+        this.scene.add(particle);
+
+        return true;
+      };
+
+      this.particleSpawnrl = (particle) => {
+        if (this.speed <= 0.02) {
+          return false;
+        }
+
+        const { x, z } = this.rlWheel.getWorldPosition(new THREE.Vector3());
+        let { y } = this.body.getWorldPosition(new THREE.Vector3());
+        y -= this.bodyH;
+
+        particle.position.set(x, y, z);
+
+        particle.velocity = {
+          z: -this.speed / 8 * Math.sin(-this.angle),
+          x: -this.speed / 8 * Math.cos(-this.angle),
+          y: 0.003
+        };
+
+        this.scene.add(particle);
+
+        return true;
+      };
+
+      this.particleUpdate = (particle) => {
+        if (particle.material.opacity <= 0) {
+          this.scene.remove(particle);
+          return false;
+        }
+
+        particle.material.opacity -= 0.003;
+
+        particle.position.x += particle.velocity.x;
+        particle.position.y += particle.velocity.y;
+        particle.position.z += particle.velocity.z;
+
+        return true;
+      };
     };
+
+    this.scene = scene;
 
     if (this.isLoad === true) {
       func();
     } else {
       this.onLoad = () => { func(); };
-      this.scene = scene;
     }
+  }
+
+  get getSpeed () {
+    return this.speed;
   }
 
   addspeed (value) {
@@ -128,12 +266,17 @@ export default class CarFromObj extends ObjectWork {
     }
   }
 
-  update () {
+  update (time) {
     this.angle += this.wheelRotY / 2 * this.speed;
     this.position.z -= this.speed * Math.sin(-this.angle);
     this.position.x -= this.speed * Math.cos(-this.angle);
     this.wheelRot += this.speed / 1;
     this.onUpdate();
+
+    this.pwlf.update(time / 8);
+    this.pwrf.update(time / 8);
+    this.pwll.update(time / 8);
+    this.pwrl.update(time / 8);
   }
 
   get getX () {

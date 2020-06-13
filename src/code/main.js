@@ -102,7 +102,7 @@ function webGLStart () {
     renderer.render(scene, camera);
 
     car.height = tw.height(car.getX, car.getZ);
-    car.update();
+    car.update(time);
     kw.update();
     camera.position.set(car.getX + Math.sin(xAngle) * Math.cos(yAngle) * mw.getTransZ,
       car.getY - Math.sin(yAngle) * mw.getTransZ,
