@@ -54840,8 +54840,10 @@ var GLTFLoader = ( function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CarFromObj; });
-/* harmony import */ var _objects_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./objects.mjs */ "./src/code/objects.mjs");
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _particles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./particles.js */ "./src/code/particles.js");
+/* harmony import */ var _objects_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./objects.mjs */ "./src/code/objects.mjs");
+/* harmony import */ var _img_dust_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../img/dust.png */ "./src/img/dust.png");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
@@ -54873,6 +54875,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
+
 var CarFromObj = /*#__PURE__*/function (_ObjectWork) {
   _inherits(CarFromObj, _ObjectWork);
 
@@ -54895,6 +54899,54 @@ var CarFromObj = /*#__PURE__*/function (_ObjectWork) {
     };
     _this.wheelRot = 0;
     _this.wheelRotY = 0;
+
+    _this.particleUpdate = function (particle) {
+      return true;
+    };
+
+    var func1 = function func1(particle) {
+      return _this.particleUpdate(particle);
+    };
+
+    _this.particleSpawnlf = function (particle) {
+      return false;
+    };
+
+    var func = function func(particle) {
+      return _this.particleSpawnlf(particle);
+    };
+
+    _this.pwlf = new _particles_js__WEBPACK_IMPORTED_MODULE_0__["default"](0.003, _img_dust_png__WEBPACK_IMPORTED_MODULE_2__["default"], func.bind(_assertThisInitialized(_this)), func1.bind(_assertThisInitialized(_this)));
+
+    _this.particleSpawnrf = function (particle) {
+      return false;
+    };
+
+    func = function func(particle) {
+      return _this.particleSpawnrf(particle);
+    };
+
+    _this.pwrf = new _particles_js__WEBPACK_IMPORTED_MODULE_0__["default"](0.003, _img_dust_png__WEBPACK_IMPORTED_MODULE_2__["default"], func.bind(_assertThisInitialized(_this)), func1.bind(_assertThisInitialized(_this)));
+
+    _this.particleSpawnll = function (particle) {
+      return false;
+    };
+
+    func = function func(particle) {
+      return _this.particleSpawnll(particle);
+    };
+
+    _this.pwll = new _particles_js__WEBPACK_IMPORTED_MODULE_0__["default"](0.003, _img_dust_png__WEBPACK_IMPORTED_MODULE_2__["default"], func.bind(_assertThisInitialized(_this)), func1.bind(_assertThisInitialized(_this)));
+
+    _this.particleSpawnrl = function (particle) {
+      return false;
+    };
+
+    func = function func(particle) {
+      return _this.particleSpawnrl(particle);
+    };
+
+    _this.pwrl = new _particles_js__WEBPACK_IMPORTED_MODULE_0__["default"](0.003, _img_dust_png__WEBPACK_IMPORTED_MODULE_2__["default"], func.bind(_assertThisInitialized(_this)), func1.bind(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -54930,7 +54982,7 @@ var CarFromObj = /*#__PURE__*/function (_ObjectWork) {
         {
           var color = 0xFFFFFF;
           var intensity = 1;
-          _this2.light = new three__WEBPACK_IMPORTED_MODULE_1__["SpotLight"](color, intensity);
+          _this2.light = new three__WEBPACK_IMPORTED_MODULE_3__["SpotLight"](color, intensity);
 
           _this2.light.position.set(-2.6, 1.066 - _this2.body.position.y, 0.632);
 
@@ -54942,7 +54994,7 @@ var CarFromObj = /*#__PURE__*/function (_ObjectWork) {
 
           _this2.body.add(_this2.light.target);
 
-          _this2.light1 = new three__WEBPACK_IMPORTED_MODULE_1__["SpotLight"](color, intensity);
+          _this2.light1 = new three__WEBPACK_IMPORTED_MODULE_3__["SpotLight"](color, intensity);
 
           _this2.light1.position.set(-2.6, 1.066 - _this2.body.position.y, -0.632);
 
@@ -55050,7 +55102,123 @@ var CarFromObj = /*#__PURE__*/function (_ObjectWork) {
           _this2.rlWheel.rotation.z = -_this2.wheelRot;
           _this2.body.rotation.y = _this2.angle;
         };
+
+        _this2.particleSpawnlf = function (particle) {
+          if (_this2.speed <= 0.02) {
+            return false;
+          }
+
+          var _this2$lfWheel$getWor = _this2.lfWheel.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_3__["Vector3"]()),
+              x = _this2$lfWheel$getWor.x,
+              z = _this2$lfWheel$getWor.z;
+
+          var _this2$body$getWorldP = _this2.body.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_3__["Vector3"]()),
+              y = _this2$body$getWorldP.y;
+
+          y -= _this2.bodyH;
+          particle.position.set(x, y, z);
+          particle.velocity = {
+            x: -_this2.speed / 8 * Math.cos(-_this2.angle),
+            z: -_this2.speed / 8 * Math.sin(-_this2.angle),
+            y: 0.003
+          };
+
+          _this2.scene.add(particle);
+
+          return true;
+        };
+
+        _this2.particleSpawnrf = function (particle) {
+          if (_this2.speed <= 0.02) {
+            return false;
+          }
+
+          var _this2$rfWheel$getWor = _this2.rfWheel.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_3__["Vector3"]()),
+              x = _this2$rfWheel$getWor.x,
+              z = _this2$rfWheel$getWor.z;
+
+          var _this2$body$getWorldP2 = _this2.body.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_3__["Vector3"]()),
+              y = _this2$body$getWorldP2.y;
+
+          y -= _this2.bodyH;
+          particle.position.set(x, y, z);
+          particle.velocity = {
+            x: -_this2.speed / 8 * Math.cos(-_this2.angle),
+            z: -_this2.speed / 8 * Math.sin(-_this2.angle),
+            y: 0.003
+          };
+
+          _this2.scene.add(particle);
+
+          return true;
+        };
+
+        _this2.particleSpawnll = function (particle) {
+          if (_this2.speed <= 0.02) {
+            return false;
+          }
+
+          var _this2$llWheel$getWor = _this2.llWheel.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_3__["Vector3"]()),
+              x = _this2$llWheel$getWor.x,
+              z = _this2$llWheel$getWor.z;
+
+          var _this2$body$getWorldP3 = _this2.body.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_3__["Vector3"]()),
+              y = _this2$body$getWorldP3.y;
+
+          y -= _this2.bodyH;
+          particle.position.set(x, y, z);
+          particle.velocity = {
+            x: -_this2.speed / 8 * Math.cos(-_this2.angle),
+            z: -_this2.speed / 8 * Math.sin(-_this2.angle),
+            y: 0.003
+          };
+
+          _this2.scene.add(particle);
+
+          return true;
+        };
+
+        _this2.particleSpawnrl = function (particle) {
+          if (_this2.speed <= 0.02) {
+            return false;
+          }
+
+          var _this2$rlWheel$getWor = _this2.rlWheel.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_3__["Vector3"]()),
+              x = _this2$rlWheel$getWor.x,
+              z = _this2$rlWheel$getWor.z;
+
+          var _this2$body$getWorldP4 = _this2.body.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_3__["Vector3"]()),
+              y = _this2$body$getWorldP4.y;
+
+          y -= _this2.bodyH;
+          particle.position.set(x, y, z);
+          particle.velocity = {
+            z: -_this2.speed / 8 * Math.sin(-_this2.angle),
+            x: -_this2.speed / 8 * Math.cos(-_this2.angle),
+            y: 0.003
+          };
+
+          _this2.scene.add(particle);
+
+          return true;
+        };
+
+        _this2.particleUpdate = function (particle) {
+          if (particle.material.opacity <= 0) {
+            _this2.scene.remove(particle);
+
+            return false;
+          }
+
+          particle.material.opacity -= 0.003;
+          particle.position.x += particle.velocity.x;
+          particle.position.y += particle.velocity.y;
+          particle.position.z += particle.velocity.z;
+          return true;
+        };
       };
+
+      this.scene = scene;
 
       if (this.isLoad === true) {
         func();
@@ -55058,8 +55226,6 @@ var CarFromObj = /*#__PURE__*/function (_ObjectWork) {
         this.onLoad = function () {
           func();
         };
-
-        this.scene = scene;
       }
     }
   }, {
@@ -55082,12 +55248,21 @@ var CarFromObj = /*#__PURE__*/function (_ObjectWork) {
     }
   }, {
     key: "update",
-    value: function update() {
+    value: function update(time) {
       this.angle += this.wheelRotY / 2 * this.speed;
       this.position.z -= this.speed * Math.sin(-this.angle);
       this.position.x -= this.speed * Math.cos(-this.angle);
       this.wheelRot += this.speed / 1;
       this.onUpdate();
+      this.pwlf.update(time / 8);
+      this.pwrf.update(time / 8);
+      this.pwll.update(time / 8);
+      this.pwrl.update(time / 8);
+    }
+  }, {
+    key: "getSpeed",
+    get: function get() {
+      return this.speed;
     }
   }, {
     key: "getX",
@@ -55112,7 +55287,7 @@ var CarFromObj = /*#__PURE__*/function (_ObjectWork) {
   }]);
 
   return CarFromObj;
-}(_objects_mjs__WEBPACK_IMPORTED_MODULE_0__["default"]);
+}(_objects_mjs__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 
 
@@ -55313,7 +55488,7 @@ function webGLStart() {
     resize();
     renderer.render(scene, camera);
     car.height = tw.height(car.getX, car.getZ);
-    car.update();
+    car.update(time);
     kw.update();
     camera.position.set(car.getX + Math.sin(xAngle) * Math.cos(yAngle) * mw.getTransZ, car.getY - Math.sin(yAngle) * mw.getTransZ, car.getZ + Math.cos(xAngle) * Math.cos(yAngle) * mw.getTransZ);
     camera.lookAt(car.getX, car.getY, car.getZ);
@@ -55506,6 +55681,74 @@ var ObjectWork = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./src/code/particles.js":
+/*!*******************************!*\
+  !*** ./src/code/particles.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ParticlesWork; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var ParticlesWork = /*#__PURE__*/function () {
+  function ParticlesWork(dTime, texture) {
+    var onSpawn = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};
+    var onUpdate = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {};
+
+    _classCallCheck(this, ParticlesWork);
+
+    this.onSpawn = onSpawn;
+    this.onUpdate = onUpdate;
+    this.spriteMap = new three__WEBPACK_IMPORTED_MODULE_0__["TextureLoader"]().load(texture);
+    this.time = 0;
+    this.dTime = dTime;
+    this.sprites = [];
+  }
+
+  _createClass(ParticlesWork, [{
+    key: "update",
+    value: function update(time) {
+      for (var i = 0; i < this.sprites.length; i++) {
+        if (this.onUpdate(this.sprites[i]) === false) {
+          this.sprites.splice(i, 1);
+        }
+      }
+
+      if (time - this.time >= this.dTime || this.time === 0) {
+        var spriteMaterial = new three__WEBPACK_IMPORTED_MODULE_0__["SpriteMaterial"]({
+          map: this.spriteMap,
+          color: 0xffffff,
+          transparent: true
+        });
+        var newSprite = new three__WEBPACK_IMPORTED_MODULE_0__["Sprite"](spriteMaterial);
+
+        if (this.onSpawn(newSprite) === false) {
+          return;
+        }
+
+        this.sprites.push(newSprite);
+        this.time = time;
+      }
+    }
+  }]);
+
+  return ParticlesWork;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/code/style.css":
 /*!****************************!*\
   !*** ./src/code/style.css ***!
@@ -55630,6 +55873,19 @@ var TopologyWork = /*#__PURE__*/function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "./src/img/dust.png":
+/*!**************************!*\
+  !*** ./src/img/dust.png ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "328eebf8b526ca03bc2049b93dcf5ad0.png");
 
 /***/ }),
 

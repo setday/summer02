@@ -27,9 +27,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "b": "webpack --config webpack.config.js",
-    "rb": "webpack-dev-server"
+    "rb": "webpack-dev-server",
+    "s": "webpack-dev-server",
+    "start": "node src/main.js"
   },
   "author": "",
   "license": "ISC"
