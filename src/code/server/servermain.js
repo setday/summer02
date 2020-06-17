@@ -1,5 +1,5 @@
 const app = require('express')();
-const http = require('http').createServer(app);
+const http = require('https').createServer(app);
 const io = require('socket.io');
 const server = io(http);
 const PORT = process.env.PORT || 8081;
@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 8081;
 console.log('start');
 
 const SERVER_URL =
-'localhost:8081';
+'https://sleepy-sands-27635.herokuapp.com/';
 
 const cars = [];
 
