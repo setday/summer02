@@ -12,8 +12,8 @@ function webGLStart () {
   const canvas = document.querySelector('#ThreeCanvas');
   const renderer = new THREE.WebGLRenderer({ canvas: canvas });
   const cars = {};
-  // const socket = io('https://sleepy-sands-27635.herokuapp.com');
-  const socket = io('https://google.com');
+  const socket = io('https://sleepy-sands-27635.herokuapp.com');
+  // const socket = io('https://google.com');
 
   renderer.shadowMap.enabled = true;
 

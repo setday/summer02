@@ -43,8 +43,8 @@ server.on('connection', function (socket) {
 });
 
 app.get('/', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
   res.send('<h1>Data-server</h1>');
-  res.header('Access-Control-Allow-Origin', '*');
 });
 
 http.listen(PORT, () => {
