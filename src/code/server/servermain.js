@@ -43,7 +43,7 @@ server.on('connection', function (socket) {
 });
 
 app.get('/', (req, res) => {
-  res.send('<h1>Data-server</h1>');
+  res.send('<h1>Datauiugguigugfgukgfguigukf-server</h1>');
 });
 
 http.listen(PORT, () => {
