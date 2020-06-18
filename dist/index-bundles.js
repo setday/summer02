@@ -65955,6 +65955,37 @@ var CarFromObj = /*#__PURE__*/function (_ObjectWork) {
       }
     }
   }, {
+    key: "remove",
+    value: function remove() {
+      var _this3 = this;
+
+      var func = function func() {
+        _this3.body.remove(_this3.rlWheel);
+
+        _this3.body.remove(_this3.llWheel);
+
+        _this3.body.remove(_this3.rfWheel);
+
+        _this3.body.remove(_this3.lfWheel);
+
+        _this3.body.remove(_this3.light1);
+
+        _this3.body.remove(_this3.light1.target);
+
+        _this3.body.remove(_this3.light);
+
+        _this3.body.remove(_this3.light.target);
+
+        _this3.scene.remove(_this3.body);
+      };
+
+      if (this.isLoad === true) {
+        func();
+      } else {
+        this.onLoad = function () {};
+      }
+    }
+  }, {
     key: "addspeed",
     value: function addspeed(value) {
       if (value > 0 && this.speed < 0.05) {
@@ -66132,7 +66163,8 @@ function webGLStart() {
     canvas: canvas
   });
   var cars = {};
-  var socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1___default()('https://sleepy-sands-27635.herokuapp.com/');
+  var socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1___default()('https://limitless-scrubland-56705.herokuapp.com/'); // const socket = io('localhost:8081/');
+
   renderer.shadowMap.enabled = true;
   var mw = new _mouse_mjs__WEBPACK_IMPORTED_MODULE_3__["default"](canvas);
   var kw = new _keyboard_mjs__WEBPACK_IMPORTED_MODULE_4__["default"](canvas, keyFunc);
@@ -66146,9 +66178,15 @@ function webGLStart() {
   var camera = new three__WEBPACK_IMPORTED_MODULE_2__["PerspectiveCamera"](fov, aspect, near, far);
   var car = new _car_js__WEBPACK_IMPORTED_MODULE_6__["default"](_obj_truck_glb__WEBPACK_IMPORTED_MODULE_8__["default"]);
   var scene = new three__WEBPACK_IMPORTED_MODULE_2__["Scene"]();
-  socket.on('connection', function () {
+  socket.on('connect', function () {
+    console.log('loh');
     socket.on('addCar', function (id) {
       cars[id] = new _car_js__WEBPACK_IMPORTED_MODULE_6__["default"](_obj_truck_glb__WEBPACK_IMPORTED_MODULE_8__["default"]);
+      cars[id].draw(scene);
+    });
+    socket.on('delCar', function (id) {
+      cars[id].remove();
+      delete cars[id];
     });
     socket.on('updateAll', function () {
       socket.emit('update', car.speed, car.position.x, car.position.y, car.position.z, car.angle, car.wheelRotY);
@@ -66188,25 +66226,25 @@ function webGLStart() {
       case 'ц':
       case 'w':
         car.addspeed(0.0002);
-        socket.emit('speedSet', socket.id, car.speed);
+        socket.emit('speedSet', car.speed);
         break;
 
       case 'ы':
       case 's':
         car.addspeed(-0.0002);
-        socket.emit('speedSet', socket.id, car.speed);
+        socket.emit('speedSet', car.speed);
         break;
 
       case 'ф':
       case 'a':
         car.addangle(0.004);
-        socket.emit('wheelRotYSet', socket.id, car.wheelRotYSet);
+        socket.emit('wheelRotYSet', car.wheelRotY);
         break;
 
       case 'в':
       case 'd':
         car.addangle(-0.004);
-        socket.emit('wheelRotYSet', socket.id, car.wheelRotYSet);
+        socket.emit('wheelRotYSet', car.wheelRotY);
         break;
     }
   }
@@ -66249,16 +66287,17 @@ function webGLStart() {
     kw.update();
 
     for (var i in cars) {
+      cars[i].height = tw.height(cars[i].getX, cars[i].getZ);
       cars[i].update();
     }
 
     camera.position.set(car.getX + Math.sin(xAngle) * Math.cos(yAngle) * mw.getTransZ, car.getY - Math.sin(yAngle) * mw.getTransZ, car.getZ + Math.cos(xAngle) * Math.cos(yAngle) * mw.getTransZ);
     camera.lookAt(car.getX, car.getY, car.getZ);
     sunupdate(time, 20);
-    requestAnimationFrame(render);
+    window.requestAnimationFrame(render);
   }
 
-  requestAnimationFrame(render);
+  window.requestAnimationFrame(render);
 }
 
 webGLStart();

@@ -246,6 +246,29 @@ export default class CarFromObj extends ObjectWork {
     }
   }
 
+  remove () {
+    const func = () => {
+      this.body.remove(this.rlWheel);
+      this.body.remove(this.llWheel);
+      this.body.remove(this.rfWheel);
+      this.body.remove(this.lfWheel);
+
+      this.body.remove(this.light1);
+      this.body.remove(this.light1.target);
+
+      this.body.remove(this.light);
+      this.body.remove(this.light.target);
+
+      this.scene.remove(this.body);
+    };
+
+    if (this.isLoad === true) {
+      func();
+    } else {
+      this.onLoad = () => {};
+    }
+  }
+
   get getSpeed () {
     return this.speed;
   }

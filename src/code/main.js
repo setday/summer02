@@ -12,8 +12,8 @@ function webGLStart () {
   const canvas = document.querySelector('#ThreeCanvas');
   const renderer = new THREE.WebGLRenderer({ canvas: canvas });
   const cars = {};
-  //  const socket = io('https://sleepy-sands-27635.herokuapp.com/');
-  const socket = io('localhost:8081/');
+  const socket = io('https://limitless-scrubland-56705.herokuapp.com/');
+  // const socket = io('localhost:8081/');
 
   renderer.shadowMap.enabled = true;
 
@@ -30,9 +30,11 @@ function webGLStart () {
   const car = new CarFromObj(fileCar);
   const scene = new THREE.Scene();
 
-  socket.on('connection', () => {
-    console.log('gg2');
-    socket.on('addCar', (id) => { cars[id] = new CarFromObj(fileCar); });
+  socket.on('connect', () => {
+    console.log('loh');
+    socket.on('addCar', (id) => { cars[id] = new CarFromObj(fileCar); cars[id].draw(scene); });
+
+    socket.on('delCar', (id) => { cars[id].remove(); delete cars[id]; });
 
     socket.on('updateAll', () => {
       socket.emit('update', car.speed, car.position.x, car.position.y, car.position.z, car.angle, car.wheelRotY);
@@ -75,22 +77,22 @@ function webGLStart () {
       case 'ц':
       case 'w':
         car.addspeed(0.0002);
-        // socket.emit('speedSet', socket.id, car.speed);
+        socket.emit('speedSet', car.speed);
         break;
       case 'ы':
       case 's':
         car.addspeed(-0.0002);
-        // socket.emit('speedSet', socket.id, car.speed);
+        socket.emit('speedSet', car.speed);
         break;
       case 'ф':
       case 'a':
         car.addangle(0.004);
-        // socket.emit('wheelRotYSet', socket.id, car.wheelRotYSet);
+        socket.emit('wheelRotYSet', car.wheelRotY);
         break;
       case 'в':
       case 'd':
         car.addangle(-0.004);
-        // socket.emit('wheelRotYSet', socket.id, car.wheelRotYSet);
+        socket.emit('wheelRotYSet', car.wheelRotY);
         break;
     }
   }
@@ -135,6 +137,7 @@ function webGLStart () {
     car.update(time);
     kw.update();
     for (const i in cars) {
+      cars[i].height = tw.height(cars[i].getX, cars[i].getZ);
       cars[i].update();
     }
     camera.position.set(car.getX + Math.sin(xAngle) * Math.cos(yAngle) * mw.getTransZ,
@@ -144,10 +147,10 @@ function webGLStart () {
 
     sunupdate(time, 20);
 
-    requestAnimationFrame(render);
+    window.requestAnimationFrame(render);
   }
 
-  requestAnimationFrame(render);
+  window.requestAnimationFrame(render);
 }
 
 webGLStart();
