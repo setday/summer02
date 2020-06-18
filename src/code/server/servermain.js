@@ -1,5 +1,5 @@
 const app = require('express')();
-const http = require('https').createServer(app);
+const http = require('http').createServer(app);
 const io = require('socket.io');
 const server = io(http);
 const PORT = process.env.PORT || 8081;
@@ -8,6 +8,11 @@ console.log('start');
 
 const SERVER_URL =
 'https://sleepy-sands-27635.herokuapp.com/';
+
+app.get('/', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.send('<h1>Data-server</h1>');
+});
 
 const cars = [];
 
@@ -40,11 +45,6 @@ server.on('connection', function (socket) {
       }
     });
   });
-});
-
-app.get('/', (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.send('<h1>Data-server</h1>');
 });
 
 http.listen(PORT, () => {
