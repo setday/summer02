@@ -1,20 +1,8 @@
 const app = require('express')();
 const http = require('https').createServer(app);
 const io = require('socket.io');
-const cors = require('cors');
-const whitelist = ['http://localhost:8080'];
-const corsOptions = {
-  credentials: true,
-  origin: (origin, callback) => {
-    if (whitelist.includes(origin)) {
-      return callback(null, true);
-    }
-
-    callback(new Error('Not allowed by CORS'));
-  }
-};
 const server = io(http);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8081;
 
 console.log('start');
 
@@ -22,12 +10,6 @@ const SERVER_URL =
 'https://sleepy-sands-27635.herokuapp.com/';
 
 const cars = [];
-
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  res.header('Access-Control-Allow-Credentials', true);
-  next();
-});
 
 server.on('connection', function (socket) {
   cars.forEach((i) => { server.to(i).emit('addCar', socket.id); });
@@ -59,8 +41,6 @@ server.on('connection', function (socket) {
     });
   });
 });
-
-app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.send('<h1>Data-server</h1>');
