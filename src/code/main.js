@@ -30,6 +30,7 @@ function webGLStart () {
   const scene = new THREE.Scene();
 
   socket.on('connection', () => {
+    console.log('gg2');
     socket.on('addCar', (id) => { cars[id] = new CarFromObj(fileCar); });
 
     socket.on('updateAll', () => {
@@ -73,22 +74,22 @@ function webGLStart () {
       case 'ц':
       case 'w':
         car.addspeed(0.0002);
-        socket.emit('speedSet', socket.id, car.speed);
+        // socket.emit('speedSet', socket.id, car.speed);
         break;
       case 'ы':
       case 's':
         car.addspeed(-0.0002);
-        socket.emit('speedSet', socket.id, car.speed);
+        // socket.emit('speedSet', socket.id, car.speed);
         break;
       case 'ф':
       case 'a':
         car.addangle(0.004);
-        socket.emit('wheelRotYSet', socket.id, car.wheelRotYSet);
+        // socket.emit('wheelRotYSet', socket.id, car.wheelRotYSet);
         break;
       case 'в':
       case 'd':
         car.addangle(-0.004);
-        socket.emit('wheelRotYSet', socket.id, car.wheelRotYSet);
+        // socket.emit('wheelRotYSet', socket.id, car.wheelRotYSet);
         break;
     }
   }

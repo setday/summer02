@@ -12,15 +12,15 @@ const SERVER_URL =
 const cars = [];
 
 server.on('connection', function (socket) {
-  cars.forEach((i) => { server.to(i).emit('addCar', socket.id); });
-  cars.forEach((i) => { server.to(socket.id).emit('addCar', i); });
+  cars.forEach((i) => { server.emit('addCar', socket.id); });
+  cars.forEach((i) => { server.emit('addCar', i); });
   cars.push(socket.id);
-  cars.forEach((i) => { server.to(i).emit('updateAll'); });
+  cars.forEach((i) => { server.emit('updateAll'); });
 
   socket.on('update', (speed, x, y, z, angle, wheelRotY) => {
     cars.forEach((i) => {
       if (i !== socket.id) {
-        server.to(i).emit('update', socket.id, speed, x, y, z, angle, wheelRotY);
+        server.emit('update', socket.id, speed, x, y, z, angle, wheelRotY);
       }
     });
   });
@@ -28,7 +28,7 @@ server.on('connection', function (socket) {
   socket.on('speedSet', (speed) => {
     cars.forEach((i) => {
       if (i !== socket.id) {
-        server.to(i).emit('speedSet', socket.id, speed);
+        server.emit('speedSet', socket.id, speed);
       }
     });
   });
@@ -36,7 +36,7 @@ server.on('connection', function (socket) {
   socket.on('wheelRotYSet', (wheelRotY) => {
     cars.forEach((i) => {
       if (i !== socket.id) {
-        server.to(i).emit('wheelRotYSet', socket.id, wheelRotY);
+        server.emit('wheelRotYSet', socket.id, wheelRotY);
       }
     });
   });
