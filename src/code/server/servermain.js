@@ -43,7 +43,8 @@ server.on('connection', function (socket) {
 });
 
 app.get('/', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
   res.send('<h1>Data-server</h1>');
 });
 
