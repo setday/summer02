@@ -44,6 +44,7 @@ server.on('connection', function (socket) {
 
 app.get('/', (req, res) => {
   res.send('<h1>Data-server</h1>');
+  res.header('Access-Control-Allow-Origin', '*');
 });
 
 http.listen(PORT, () => {
