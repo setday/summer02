@@ -2,6 +2,11 @@ const app = require('express')();
 const http = require('https').createServer(app);
 const io = require('socket.io');
 const server = io(http);
+const cors = require('cors');
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 const PORT = process.env.PORT || 8081;
 
 console.log('start');
