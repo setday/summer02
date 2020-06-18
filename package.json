@@ -32,7 +32,8 @@
     "b": "webpack --config webpack.config.js",
     "rb": "webpack-dev-server",
     "s": "webpack-dev-server",
-    "start": "node src/code/server/servermain.js"
+    "start": "node src/code/server/servermain.js",
+    "comserv": "git add . && git commit -m \"some fixes\" && git push -u origin master && git push heroku master"
   },
   "author": "",
   "license": "ISC"

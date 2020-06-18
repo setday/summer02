@@ -43,7 +43,7 @@ server.on('connection', function (socket) {
 });
 
 app.get('/allow-cors', (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Origin', 'http://localhost:8080/');
   res.set('Access-Control-Allow-Credentials', 'true');
 });
 
