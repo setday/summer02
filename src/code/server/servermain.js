@@ -9,11 +9,6 @@ console.log('start');
 const SERVER_URL =
 'https://sleepy-sands-27635.herokuapp.com/';
 
-app.get('/', (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.send('<h1>Data-server</h1>');
-});
-
 const cars = [];
 
 server.on('connection', function (socket) {
@@ -45,6 +40,11 @@ server.on('connection', function (socket) {
       }
     });
   });
+});
+
+app.get('/', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.send('<h1>Data-server</h1>');
 });
 
 http.listen(PORT, () => {
