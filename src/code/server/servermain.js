@@ -23,6 +23,12 @@ const SERVER_URL =
 
 const cars = [];
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 server.on('connection', function (socket) {
   cars.forEach((i) => { server.to(i).emit('addCar', socket.id); });
   cars.forEach((i) => { server.to(socket.id).emit('addCar', i); });
@@ -52,11 +58,6 @@ server.on('connection', function (socket) {
       }
     });
   });
-});
-
-app.use((req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  res.header('Access-Control-Allow-Credentials', true);
 });
 
 app.use(cors(corsOptions));
