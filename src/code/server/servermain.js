@@ -2,7 +2,7 @@ const app = require('express')();
 const http = require('https').createServer(app);
 const io = require('socket.io');
 const server = io(http);
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 3000;
 
 console.log('start');
 
@@ -42,9 +42,9 @@ server.on('connection', function (socket) {
   });
 });
 
-app.get('/allow-cors', (req, res) => {
-  res.set('Access-Control-Allow-Origin', 'http://localhost:8080/');
-  res.set('Access-Control-Allow-Credentials', 'true');
+app.use((req, res) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
 });
 
 app.get('/', (req, res) => {
