@@ -12,8 +12,7 @@ function webGLStart () {
   const canvas = document.querySelector('#ThreeCanvas');
   const renderer = new THREE.WebGLRenderer({ canvas: canvas });
   const cars = {};
-  const socket = io('https://cors-anywhere.herokuapp.com/https://sleepy-sands-27635.herokuapp.com/');
-  // const socket = io('https://google.com');
+  const socket = io('https://sleepy-sands-27635.herokuapp.com/');
 
   renderer.shadowMap.enabled = true;
 
@@ -31,7 +30,6 @@ function webGLStart () {
   const scene = new THREE.Scene();
 
   socket.on('connection', () => {
-    console.log('yes');
     socket.on('addCar', (id) => { cars[id] = new CarFromObj(fileCar); });
 
     socket.on('updateAll', () => {
