@@ -1,6 +1,18 @@
 const app = require('express')();
 const http = require('https').createServer(app);
 const io = require('socket.io');
+const cors = require('cors');
+const whitelist = ['http://localhost:8080'];
+const corsOptions = {
+  credentials: true,
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin)) {
+      return callback(null, true);
+    }
+
+    callback(new Error('Not allowed by CORS'));
+  }
+};
 const server = io(http);
 const PORT = process.env.PORT || 3000;
 
@@ -46,6 +58,8 @@ app.use((req, res) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
   res.header('Access-Control-Allow-Credentials', true);
 });
+
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.send('<h1>Data-server</h1>');
