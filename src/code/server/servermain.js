@@ -44,6 +44,7 @@ server.on('connection', function (socket) {
 
 app.get('/allow-cors', (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Credentials', 'true');
 });
 
 app.get('/', (req, res) => {
