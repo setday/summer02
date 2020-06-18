@@ -43,8 +43,8 @@ server.on('connection', function (socket) {
 });
 
 app.use((req, res) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.header('Access-Control-Allow-Credentials', true);
 });
 
 app.get('/', (req, res) => {
